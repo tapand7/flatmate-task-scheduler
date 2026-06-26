@@ -8,7 +8,15 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend.vercel.app", // update this after frontend deploys
+    ],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.use("/api/users", require("./routes/userRoutes"));
@@ -21,6 +29,12 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ← CHANGED: only listen locally, not on Vercel
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// ← ADDED: Vercel needs this
+module.exports = app;
