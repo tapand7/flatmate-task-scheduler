@@ -17,20 +17,19 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>("ALL");
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+
   const [showModal, setShowModal] = useState(false);
   const [page, setPage] = useState(1);
   const { loading: pageLoading, withLoader } = usePageLoader();
 
   useEffect(() => {
     if (!user?.flatId) {
-      setLoading(false);
       return;
     }
     getTasks(user.flatId)
       .then(setTasks)
       .catch(() => setTasks([]))
-      .finally(() => setLoading(false));
+      .finally(() => {});
   }, [user]);
 
   const filtered = tasks

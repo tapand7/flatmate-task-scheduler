@@ -1,5 +1,4 @@
 import { useAuth } from "../Auth/AuthContext";
-import AlternoLogo from "./AlternoLogo";
 
 type Page = "dashboard" | "tasks" | "members" | "settings";
 
