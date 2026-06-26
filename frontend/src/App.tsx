@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { AuthProvider, useAuth } from "./components/Auth/AuthContext";
 import LoginPage from "./components/common/LoginPage";
 import RegisterPage from "./components/common/RegisterPage";
+import HomePage from "./components/common/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
 import TasksPage from "./components/Tasks/TasksPage";
 import MembersPage from "./components/Users/MembersPage";
@@ -13,12 +14,12 @@ import Footer from "./components/common/Footer";
 import PageLoader from "./components/common/PageLoader";
 import { usePageLoader } from "./components/usePageLoader";
 
-type Page = "dashboard" | "tasks" | "members" | "settings";
+type Page = "home" | "dashboard" | "tasks" | "members" | "settings";
 
 function Inner() {
   const { isAuthenticated } = useAuth();
   const [authView, setAuthView] = useState<"login" | "register">("login");
-  const [page, setPage] = useState<Page>("dashboard");
+  const [page, setPage] = useState<Page>("home");
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
@@ -28,6 +29,11 @@ function Inner() {
     document.documentElement.classList.toggle("dark", darkMode);
     localStorage.setItem("alterno_theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  // Reset to home whenever user logs in fresh
+  useEffect(() => {
+    if (isAuthenticated) setPage("home");
+  }, [isAuthenticated]);
 
   const handlePageChange = (next: Page) => {
     if (next === page) return;
@@ -55,7 +61,16 @@ function Inner() {
     );
   }
 
-  const PageMap: Record<Page, ReactNode> = {
+  // Home page — full screen, no sidebar/header/footer
+  if (page === "home") {
+    return (
+      <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C] dark:text-white">
+        <HomePage onGetStarted={() => handlePageChange("dashboard")} />
+      </div>
+    );
+  }
+
+  const PageMap: Record<Exclude<Page, "home">, ReactNode> = {
     dashboard: <DashboardPage />,
     tasks: <TasksPage />,
     members: <MembersPage />,
@@ -63,34 +78,28 @@ function Inner() {
   };
 
   return (
-    // Outer shell — full viewport, no overflow
     <div className="flex h-screen flex-col bg-slate-100 text-slate-950 transition-colors dark:bg-[#0D0F3C] dark:text-white">
-      {/* ── Header: sticky at top ── */}
       <Header
         darkMode={darkMode}
         onToggleTheme={() => setDarkMode((c) => !c)}
       />
 
-      {/* ── Middle row: sidebar + content ── */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar: independently scrollable */}
         <aside className="flex h-full w-56 flex-shrink-0 flex-col overflow-x-hidden overflow-y-auto border-r border-[#E8EAFF] bg-white dark:border-[#2D35D4]/30 dark:bg-[#1A1F8C]">
           <Sidebar
-            current={page}
-            onChange={handlePageChange}
+            current={page as Exclude<Page, "home">}
+            onChange={(p) => handlePageChange(p)}
             darkMode={darkMode}
             onToggleTheme={() => setDarkMode((c) => !c)}
           />
         </aside>
 
-        {/* Main content: independently scrollable */}
         <main className="relative flex-1 overflow-y-auto">
           {loading && <PageLoader />}
-          {PageMap[page]}
+          {PageMap[page as Exclude<Page, "home">]}
         </main>
       </div>
 
-      {/* ── Footer: pinned at bottom ── */}
       <Footer />
     </div>
   );
