@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://your-frontend.vercel.app", // update this after frontend deploys
+      "https://flatmate-task-scheduler-kc2r.vercel.app", // update this after frontend deploys
     ],
     credentials: true,
   }),
