@@ -41,6 +41,7 @@ const createUser = async (req, res) => {
       flatId,
       role: existingFlatUsers === 0 ? "ADMIN" : "MEMBER",
     });
+    await newUser.populate("flatId", "name");
 
     res.status(201).json({
       user: userResponse(newUser),
@@ -54,7 +55,9 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email })
+      .select("+password")
+      .populate("flatId", "name");
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -96,7 +99,11 @@ const updateUserStatus = async (req, res) => {
       return res.status(400).json({ message: "Invalid status" });
     }
 
-    const user = await User.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true },
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

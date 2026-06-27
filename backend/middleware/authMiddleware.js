@@ -13,10 +13,13 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || "supersecretkey");
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET || "supersecretkey",
+      );
 
       // Get user from token (exclude password)
-      req.user = await User.findById(decoded.id);
+      req.user = await User.findById(decoded.id).populate("flatId", "name");
 
       next();
     } catch (error) {
