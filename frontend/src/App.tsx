@@ -118,7 +118,7 @@ function AuthShell() {
 function HomeShell() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [darkMode, setDarkMode] = useState(
+  const [darkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
 
