@@ -147,7 +147,7 @@ export default function Sidebar({ current, onChange }: SidebarProps) {
             Current flat
           </p>
           <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-white">
-            {user.flatId}
+            {typeof user.flatId === "object" ? user.flatId.name : user.flatId}
           </p>
         </div>
       )}

@@ -1,3 +1,8 @@
+export interface FlatInfo {
+  _id: string;
+  name: string;
+}
+
 export interface User {
   _id: string;
   name: string;
@@ -6,7 +11,19 @@ export interface User {
   role: "ADMIN" | "MEMBER";
   status: "ACTIVE" | "OOF";
   notificationPreference: "EMAIL" | "WHATSAPP";
-  flatId: string;
+  flatId: FlatInfo | string; // string fallback for safety
+  lastAssignedAt: string | null;
+  createdAt: string;
+}
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: "ADMIN" | "MEMBER";
+  status: "ACTIVE" | "OOF";
+  notificationPreference: "EMAIL" | "WHATSAPP";
+  flatId: FlatInfo | string;
   lastAssignedAt: string | null;
   createdAt: string;
 }
