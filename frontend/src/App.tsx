@@ -55,7 +55,6 @@ function AppShell() {
         darkMode={darkMode}
         onToggleTheme={() => setDarkMode((c) => !c)}
       />
-
       <div className="flex flex-1 overflow-hidden">
         <aside className="flex h-full w-56 flex-shrink-0 flex-col overflow-x-hidden overflow-y-auto border-r border-[#E8EAFF] bg-white dark:border-[#2D35D4]/30 dark:bg-[#1A1F8C]">
           <Sidebar
@@ -65,7 +64,6 @@ function AppShell() {
             onToggleTheme={() => setDarkMode((c) => !c)}
           />
         </aside>
-
         <main className="relative flex-1 overflow-y-auto">
           {loading && <PageLoader />}
           <Routes>
@@ -77,7 +75,6 @@ function AppShell() {
           </Routes>
         </main>
       </div>
-
       <Footer />
     </div>
   );
@@ -87,8 +84,8 @@ function AppShell() {
 function AuthShell() {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const { loading, withLoader } = usePageLoader();
   const navigate = useNavigate();
-
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
@@ -101,8 +98,16 @@ function AuthShell() {
 
   const isRegister = location.pathname === "/register";
 
+  const handleLoginSuccess = () => {
+    withLoader(async () => {
+      await new Promise((res) => setTimeout(res, 400));
+      navigate("/home");
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C]">
+    <div className="relative min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C]">
+      {loading && <PageLoader />}
       <button
         onClick={() => setDarkMode((c) => !c)}
         className="fixed right-5 top-5 z-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100 dark:border-[#2D35D4]/50 dark:bg-[#1A1F8C] dark:text-[#87CEEB] dark:hover:bg-[#232AAD]"
@@ -112,7 +117,10 @@ function AuthShell() {
       {isRegister ? (
         <RegisterPage onSwitch={() => navigate("/login")} />
       ) : (
-        <LoginPage onSwitch={() => navigate("/register")} />
+        <LoginPage
+          onSwitch={() => navigate("/register")}
+          onLoginSuccess={handleLoginSuccess}
+        />
       )}
     </div>
   );
@@ -122,6 +130,7 @@ function AuthShell() {
 function HomeShell() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { loading, withLoader } = usePageLoader();
   const [darkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
@@ -132,9 +141,17 @@ function HomeShell() {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
+  const handleGetStarted = () => {
+    withLoader(async () => {
+      await new Promise((res) => setTimeout(res, 400));
+      navigate("/dashboard");
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C] dark:text-white">
-      <HomePage onGetStarted={() => navigate("/dashboard")} />
+    <div className="relative min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C] dark:text-white">
+      {loading && <PageLoader />}
+      <HomePage onGetStarted={handleGetStarted} />
     </div>
   );
 }

@@ -231,18 +231,16 @@ export default function HomePage({ onGetStarted }: HomePageProps) {
           </p>
           <div className="flex flex-col items-center gap-1">
             {/* Avatar */}
-            <div className="grid h-14 w-14 place-items-center rounded-full bg-[#2D35D4] text-xl font-black text-white shadow-md">
-              {user?.name?.[0]?.toUpperCase() ?? "T"}
-            </div>
+
             <p className="mt-2 text-base font-black text-slate-950 dark:text-white">
-              {user?.name ?? "Tapan"}
+              {"Tapan"}
             </p>
             <p className="text-xs font-semibold text-[#2D35D4] dark:text-[#87CEEB]">
               Product Owner &amp; CEO
             </p>
             <p className="mt-2 max-w-xs text-xs text-slate-400 dark:text-[#6B75D4]">
-              Built alterno out of frustration with unfair chore splits in my
-              own flat. Now it runs itself.
+              Built alterno after one too many arguments about whose turn it was
+              to clean. Turns out, fairness just needed an algorithm.
             </p>
           </div>
         </div>

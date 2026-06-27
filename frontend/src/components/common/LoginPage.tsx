@@ -7,13 +7,20 @@ import Toast from "./Toast";
 
 interface LoginPageProps {
   onSwitch: () => void;
+  onLoginSuccess: () => void;
 }
 
-export default function LoginPage({ onSwitch }: LoginPageProps) {
+export default function LoginPage({
+  onSwitch,
+  onLoginSuccess,
+}: LoginPageProps) {
   const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -21,6 +28,7 @@ export default function LoginPage({ onSwitch }: LoginPageProps) {
     try {
       const response = await loginUser(form);
       login(response.user, response.token);
+      onLoginSuccess();
     } catch (error) {
       setToast({ message: (error as Error).message, type: "error" });
     } finally {
@@ -36,30 +44,42 @@ export default function LoginPage({ onSwitch }: LoginPageProps) {
         </div>
 
         <section className="rounded-lg border border-slate-200 bg-white p-8 shadow-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]">
-          <h1 className="text-2xl font-bold text-slate-950 dark:text-white">Welcome back</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-[#AEB5FF]">Sign in to manage your flat tasks.</p>
+          <h1 className="text-2xl font-bold text-slate-950 dark:text-white">
+            Welcome back
+          </h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-[#AEB5FF]">
+            Sign in to manage your flat tasks.
+          </p>
 
           <form onSubmit={handleSubmit} className="mt-7 space-y-5">
             <label className="block">
-              <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">Email</span>
+              <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">
+                Email
+              </span>
               <input
                 type="email"
                 className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                placeholder="you@example.com"
+                placeholder="Enter your email"
                 value={form.email}
-                onChange={(event) => setForm({ ...form, email: event.target.value })}
+                onChange={(event) =>
+                  setForm({ ...form, email: event.target.value })
+                }
                 required
               />
             </label>
 
             <label className="block">
-              <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">Password</span>
+              <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">
+                Password
+              </span>
               <input
                 type="password"
                 className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                placeholder="Your password"
+                placeholder="Enter your password"
                 value={form.password}
-                onChange={(event) => setForm({ ...form, password: event.target.value })}
+                onChange={(event) =>
+                  setForm({ ...form, password: event.target.value })
+                }
                 required
               />
             </label>
@@ -75,7 +95,11 @@ export default function LoginPage({ onSwitch }: LoginPageProps) {
 
           <p className="mt-6 text-center text-sm text-slate-500 dark:text-[#AEB5FF]">
             New to alterno?{" "}
-            <button type="button" onClick={onSwitch} className="font-semibold text-[#2D35D4] hover:text-[#1A1F8C] dark:text-[#87CEEB]">
+            <button
+              type="button"
+              onClick={onSwitch}
+              className="font-semibold text-[#2D35D4] hover:text-[#1A1F8C] dark:text-[#87CEEB]"
+            >
               Create an account
             </button>
           </p>
