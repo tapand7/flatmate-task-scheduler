@@ -86,7 +86,9 @@ function AppShell() {
 /* ── Auth shell ── */
 function AuthShell() {
   const { isAuthenticated } = useAuth();
-  const [authView, setAuthView] = useState<"login" | "register">("login");
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
@@ -97,6 +99,8 @@ function AuthShell() {
 
   if (isAuthenticated) return <Navigate to="/home" replace />;
 
+  const isRegister = location.pathname === "/register";
+
   return (
     <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C]">
       <button
@@ -105,10 +109,10 @@ function AuthShell() {
       >
         {darkMode ? "☀ Light mode" : "☾ Dark mode"}
       </button>
-      {authView === "login" ? (
-        <LoginPage onSwitch={() => setAuthView("register")} />
+      {isRegister ? (
+        <RegisterPage onSwitch={() => navigate("/login")} />
       ) : (
-        <RegisterPage onSwitch={() => setAuthView("login")} />
+        <LoginPage onSwitch={() => navigate("/register")} />
       )}
     </div>
   );
