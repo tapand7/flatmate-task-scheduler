@@ -143,7 +143,7 @@ const createTask = async (req, res) => {
           <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
             <tr>
               <td style="background:#2D35D4;border-radius:8px;padding:13px 30px;text-align:center;">
-                <a href="https://alterno.app" style="font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;white-space:nowrap;">View My Task →</a>
+                <a href="https://flatmate-task-scheduler-kc2r.vercel.app/" style="font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;white-space:nowrap;">View My Task →</a>
               </td>
             </tr>
           </table>

@@ -48,7 +48,7 @@ export default function RegisterPage({ onSwitch }: RegisterPageProps) {
                 <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">Full name</span>
                 <input
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                  placeholder="John Doe"
+                  placeholder="Enter Your Name"
                   value={form.name}
                   onChange={(event) => update("name", event.target.value)}
                   required
@@ -58,7 +58,7 @@ export default function RegisterPage({ onSwitch }: RegisterPageProps) {
                 <span className="text-sm font-semibold text-slate-700 dark:text-[#DDE2FF]">Phone</span>
                 <input
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                  placeholder="+91 98765 43210"
+                  placeholder="Enter Your Phone Number"
                   value={form.phone}
                   onChange={(event) => update("phone", event.target.value)}
                   required
@@ -71,7 +71,7 @@ export default function RegisterPage({ onSwitch }: RegisterPageProps) {
               <input
                 type="email"
                 className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                placeholder="you@example.com"
+                placeholder="Enter Your Email"
                 value={form.email}
                 onChange={(event) => update("email", event.target.value)}
                 required
@@ -83,7 +83,7 @@ export default function RegisterPage({ onSwitch }: RegisterPageProps) {
               <input
                 type="password"
                 className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:border-[#2D35D4]/40 dark:bg-[#0D0F3C] dark:text-white dark:placeholder:text-[#6B75D4]"
-                placeholder="Minimum 6 characters"
+                placeholder="Enter Your Password"
                 value={form.password}
                 onChange={(event) => update("password", event.target.value)}
                 required

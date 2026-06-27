@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import { AuthProvider, useAuth } from "./components/Auth/AuthContext";
 import LoginPage from "./components/common/LoginPage";
 import RegisterPage from "./components/common/RegisterPage";
@@ -13,13 +12,21 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import PageLoader from "./components/common/PageLoader";
 import { usePageLoader } from "./components/usePageLoader";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 
-type Page = "home" | "dashboard" | "tasks" | "members" | "settings";
+type Page = "dashboard" | "tasks" | "members" | "settings";
 
-function Inner() {
+/* ── Authenticated shell ── */
+function AppShell() {
   const { isAuthenticated } = useAuth();
-  const [authView, setAuthView] = useState<"login" | "register">("login");
-  const [page, setPage] = useState<Page>("home");
+  const navigate = useNavigate();
+  const location = useLocation();
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("alterno_theme") === "dark",
   );
@@ -30,51 +37,16 @@ function Inner() {
     localStorage.setItem("alterno_theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  // Reset to home whenever user logs in fresh
-  useEffect(() => {
-    if (isAuthenticated) setPage("home");
-  }, [isAuthenticated]);
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  const currentPage = location.pathname.replace("/", "") as Page;
 
   const handlePageChange = (next: Page) => {
-    if (next === page) return;
-    setPage(next);
+    if (location.pathname === `/${next}`) return;
     withLoader(async () => {
       await new Promise((res) => setTimeout(res, 400));
+      navigate(`/${next}`);
     });
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C]">
-        <button
-          onClick={() => setDarkMode((c) => !c)}
-          className="fixed right-5 top-5 z-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100 dark:border-[#2D35D4]/50 dark:bg-[#1A1F8C] dark:text-[#87CEEB] dark:hover:bg-[#232AAD]"
-        >
-          {darkMode ? "☀ Light mode" : "☾ Dark mode"}
-        </button>
-        {authView === "login" ? (
-          <LoginPage onSwitch={() => setAuthView("register")} />
-        ) : (
-          <RegisterPage onSwitch={() => setAuthView("login")} />
-        )}
-      </div>
-    );
-  }
-
-  // Home page — full screen, no sidebar/header/footer
-  if (page === "home") {
-    return (
-      <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C] dark:text-white">
-        <HomePage onGetStarted={() => handlePageChange("dashboard")} />
-      </div>
-    );
-  }
-
-  const PageMap: Record<Exclude<Page, "home">, ReactNode> = {
-    dashboard: <DashboardPage />,
-    tasks: <TasksPage />,
-    members: <MembersPage />,
-    settings: <SettingsPage />,
   };
 
   return (
@@ -87,8 +59,8 @@ function Inner() {
       <div className="flex flex-1 overflow-hidden">
         <aside className="flex h-full w-56 flex-shrink-0 flex-col overflow-x-hidden overflow-y-auto border-r border-[#E8EAFF] bg-white dark:border-[#2D35D4]/30 dark:bg-[#1A1F8C]">
           <Sidebar
-            current={page as Exclude<Page, "home">}
-            onChange={(p) => handlePageChange(p)}
+            current={currentPage}
+            onChange={handlePageChange}
             darkMode={darkMode}
             onToggleTheme={() => setDarkMode((c) => !c)}
           />
@@ -96,12 +68,89 @@ function Inner() {
 
         <main className="relative flex-1 overflow-y-auto">
           {loading && <PageLoader />}
-          {PageMap[page as Exclude<Page, "home">]}
+          <Routes>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/members" element={<MembersPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
         </main>
       </div>
 
       <Footer />
     </div>
+  );
+}
+
+/* ── Auth shell ── */
+function AuthShell() {
+  const { isAuthenticated } = useAuth();
+  const [authView, setAuthView] = useState<"login" | "register">("login");
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("alterno_theme") === "dark",
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  if (isAuthenticated) return <Navigate to="/home" replace />;
+
+  return (
+    <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C]">
+      <button
+        onClick={() => setDarkMode((c) => !c)}
+        className="fixed right-5 top-5 z-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100 dark:border-[#2D35D4]/50 dark:bg-[#1A1F8C] dark:text-[#87CEEB] dark:hover:bg-[#232AAD]"
+      >
+        {darkMode ? "☀ Light mode" : "☾ Dark mode"}
+      </button>
+      {authView === "login" ? (
+        <LoginPage onSwitch={() => setAuthView("register")} />
+      ) : (
+        <RegisterPage onSwitch={() => setAuthView("login")} />
+      )}
+    </div>
+  );
+}
+
+/* ── Home shell ── */
+function HomeShell() {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("alterno_theme") === "dark",
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  return (
+    <div className="min-h-screen bg-slate-100 transition-colors dark:bg-[#0D0F3C] dark:text-white">
+      <HomePage onGetStarted={() => navigate("/dashboard")} />
+    </div>
+  );
+}
+
+/* ── Root ── */
+function Inner() {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Routes>
+      <Route path="/login" element={<AuthShell />} />
+      <Route path="/register" element={<AuthShell />} />
+      <Route path="/home" element={<HomeShell />} />
+      <Route
+        path="*"
+        element={
+          isAuthenticated ? <AppShell /> : <Navigate to="/login" replace />
+        }
+      />
+    </Routes>
   );
 }
 
