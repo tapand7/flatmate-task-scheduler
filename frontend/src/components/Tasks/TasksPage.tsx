@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getTasks } from "../../api";
 import { useAuth } from "../Auth/AuthContext";
-import type { Task } from "../../types";
+import { getFlatId, type Task } from "../../types";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskCard from "./TaskCard";
 import { usePageLoader } from "../usePageLoader";
@@ -26,7 +26,7 @@ export default function TasksPage() {
     if (!user?.flatId) {
       return;
     }
-    getTasks(user.flatId)
+    getTasks(getFlatId(user.flatId))
       .then(setTasks)
       .catch(() => setTasks([]))
       .finally(() => {});

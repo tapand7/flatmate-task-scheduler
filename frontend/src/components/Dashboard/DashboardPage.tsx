@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getTasks } from "../../api";
 import { useAuth } from "../Auth/AuthContext";
-import type { Task } from "../../types";
+import { getFlatId, type Task } from "../../types";
 import CreateTaskModal from "../Tasks/CreateTaskModal";
 import TaskCard from "../Tasks/TaskCard";
 
@@ -214,7 +214,7 @@ export default function DashboardPage() {
       return;
     }
 
-    getTasks(user.flatId)
+    getTasks(getFlatId(user.flatId))
       .then(setTasks)
       .catch(() => setTasks([]))
       .finally(() => setLoading(false));

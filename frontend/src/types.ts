@@ -67,3 +67,12 @@ export interface CreateTaskPayload {
   flatId: string;
   dueDate: string;
 }
+export const getFlatId = (flatId: FlatInfo | string | undefined): string => {
+  if (!flatId) return "";
+  return typeof flatId === "object" ? flatId._id : flatId;
+};
+
+export const getFlatName = (flatId: FlatInfo | string | undefined): string => {
+  if (!flatId) return "";
+  return typeof flatId === "object" ? flatId.name : flatId;
+};
