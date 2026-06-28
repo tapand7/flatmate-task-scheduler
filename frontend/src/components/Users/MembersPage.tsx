@@ -87,7 +87,7 @@ export default function MembersPage() {
               <span className="font-semibold">active member</span> with the
               oldest last-assigned date. Mark someone{" "}
               <span className="font-semibold">Out of Flat (OOF)</span> when away
-              — they'll be skipped until marked back as active.
+              ,they'll be skipped until marked back as active.
             </p>
           </div>
         </div>

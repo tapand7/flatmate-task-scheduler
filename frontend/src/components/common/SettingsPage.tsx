@@ -96,7 +96,7 @@ export default function SettingsPage() {
           You are on the beta plan. Feedback is welcome.
         </p>
         <a
-          href="mailto:feedback@alterno.app"
+          href="mailto:feedback.alterno@gmail.com"
           className="mt-2 inline-block text-sm font-bold text-[#2D35D4] hover:text-[#1A1F8C] dark:text-[#87CEEB]"
         >
           Send feedback
@@ -104,12 +104,11 @@ export default function SettingsPage() {
       </section>
 
       <section className="rounded-lg border border-rose-200 bg-white p-6 dark:border-rose-500/40 dark:bg-[#101450]">
-        <h2 className="text-sm font-bold text-rose-700">Danger zone</h2>
         <button
           onClick={logout}
-          className="mt-4 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-rose-700"
+          className="cursor-pointer mt-4 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-rose-700"
         >
-          Sign out of alterno
+          Logout
         </button>
       </section>
 
