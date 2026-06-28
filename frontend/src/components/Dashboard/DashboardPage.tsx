@@ -249,7 +249,7 @@ export default function DashboardPage() {
     try {
       const newStatus = user.status === "ACTIVE" ? "OOF" : "ACTIVE";
       const updatedUser = await updateUserStatus(user._id, newStatus);
-
+      console.log("updatedUser from API:", updatedUser);
       updateUser(updatedUser);
     } finally {
       setOofLoading(false);
