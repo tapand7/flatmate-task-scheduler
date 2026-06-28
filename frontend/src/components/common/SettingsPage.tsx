@@ -96,8 +96,9 @@ export default function SettingsPage() {
           You are on the beta plan. Feedback is welcome.
         </p>
         <a
-          href="mailto:feedback.alterno@gmail.com"
-          className="mt-2 inline-block text-sm font-bold text-[#2D35D4] hover:text-[#1A1F8C] dark:text-[#87CEEB]"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=feedback.alterno@gmail.com&su=Alterno%20Feedback"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Send feedback
         </a>

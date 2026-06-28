@@ -143,7 +143,6 @@ export default function Sidebar({ current, onChange }: SidebarProps) {
         </nav>
       </div>
 
-      {/* ── Pinned bottom section — never scrolls away ── */}
       {user && (
         <div className="shrink-0 border-t border-slate-200 px-3 py-4 dark:border-[#2D35D4]/30">
           <div className="mb-3 flex items-center gap-3">
