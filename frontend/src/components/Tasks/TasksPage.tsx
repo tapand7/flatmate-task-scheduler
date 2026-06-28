@@ -17,19 +17,21 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>("ALL");
   const [search, setSearch] = useState("");
-
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [page, setPage] = useState(1);
   const { loading: pageLoading, withLoader } = usePageLoader();
 
   useEffect(() => {
     if (!user?.flatId) {
+      setInitialLoading(false);
       return;
     }
+    setInitialLoading(true);
     getTasks(getFlatId(user.flatId))
       .then(setTasks)
       .catch(() => setTasks([]))
-      .finally(() => {});
+      .finally(() => setInitialLoading(false));
   }, [user]);
 
   const filtered = tasks
@@ -110,7 +112,7 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {pageLoading ? (
+      {initialLoading ? (
         <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-sm font-semibold text-slate-500 dark:border-[#2D35D4]/30 dark:bg-[#101450] dark:text-[#AEB5FF]">
           Loading tasks...
         </div>

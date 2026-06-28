@@ -265,11 +265,11 @@ export default function DashboardPage() {
       <div className="relative z-10 mx-auto max-w-5xl px-6 py-8">
         <header className="mb-8 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-slate-500 dark:text-[#87CEEB]">
-              Good to see you,
-            </p>
             <h1 className="text-3xl font-black text-slate-950 dark:text-white">
-              {user?.name}
+              Good to see you,{" "}
+              <span className="text-[#2D35D4] dark:text-[#87CEEB]">
+                {user?.name}
+              </span>
             </h1>
             <p className="mt-2 text-sm text-slate-500 dark:text-[#AEB5FF]">
               Here is what is happening in your flat today.
@@ -285,6 +285,11 @@ export default function DashboardPage() {
         {user?.status === "OOF" && (
           <div className="mb-6 flex items-center justify-between rounded-xl border border-[#2D35D4]/30 bg-[#1A1F8C]/10 px-5 py-3.5 dark:border-[#2D35D4]/40 dark:bg-[#1A1F8C]/30">
             <div className="flex items-center gap-3">
+              <i
+                className="ti ti-plane-departure"
+                style={{ fontSize: "22px", color: "#2D35D4" }}
+                aria-hidden="true"
+              />
               <div>
                 <p className="text-sm font-bold text-[#1A1F8C] dark:text-[#87CEEB]">
                   You are marked Out of Flat
@@ -297,11 +302,11 @@ export default function DashboardPage() {
             <button
               onClick={toggleOwnOof}
               disabled={oofLoading}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#2D35D4] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#1A1F8C] disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center gap-1.5 rounded-md bg-[#2D35D4] px-2.5 py-1.5 text-xs font-bold text-white transition hover:bg-[#1A1F8C] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {oofLoading ? (
                 <>
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  <span className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                   Updating...
                 </>
               ) : (
@@ -314,20 +319,11 @@ export default function DashboardPage() {
         {user?.status === "ACTIVE" && (
           <div className="mb-6 flex items-center gap-2.5 rounded-xl border border-[#2D35D4]/20 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#2D35D4]/10 text-[#2D35D4] dark:bg-[#2D35D4]/30 dark:text-[#87CEEB]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="2" y="7" width="20" height="14" rx="2" />
-                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-              </svg>
+              <i
+                className="ti ti-plane-departure"
+                style={{ fontSize: "16px" }}
+                aria-hidden="true"
+              />
             </span>
             <p className="text-xs text-slate-500 dark:text-[#AEB5FF]">
               Leaving the flat for a few days?{" "}
