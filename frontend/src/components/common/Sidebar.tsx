@@ -100,88 +100,52 @@ export default function Sidebar({ current, onChange }: SidebarProps) {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="sticky top-0 flex h-full w-64 shrink-0 flex-col border-r border-slate-200 bg-white px-3 pt-2 pb-6 transition-colors dark:border-[#2D35D4]/30 dark:bg-[#101450]">
-      {/* <div className="flex items-center justify-between px-2 pb-7">
-        <AlternoLogo size="sm" />
-        <button
-          onClick={onToggleTheme}
-          aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:border-[#2D35D4]/50 dark:text-[#87CEEB] dark:hover:bg-[#1A1F8C] dark:hover:text-white"
-        >
-          {darkMode ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-            </svg>
-          )}
-        </button>
-      </div> */}
+    <aside className="flex h-full w-full flex-col border-r border-slate-200 bg-white transition-colors dark:border-[#2D35D4]/30 dark:bg-[#101450]">
+      {/* ── Scrollable top section ── */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-3 pt-2">
+        {user && (
+          <div className="mb-5 rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 dark:border-[#2D35D4]/40 dark:bg-[#1A1F8C]/60">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-indigo-600 dark:text-[#87CEEB]">
+              Current flat
+            </p>
+            <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-white">
+              {typeof user.flatId === "object" ? user.flatId.name : user.flatId}
+            </p>
+          </div>
+        )}
 
-      {user && (
-        <div className="mb-5 rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 dark:border-[#2D35D4]/40 dark:bg-[#1A1F8C]/60">
-          <p className="text-[11px] font-bold uppercase tracking-wide text-indigo-600 dark:text-[#87CEEB]">
-            Current flat
-          </p>
-          <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-white">
-            {typeof user.flatId === "object" ? user.flatId.name : user.flatId}
-          </p>
-        </div>
-      )}
-
-      <nav className="flex-1 space-y-1">
-        {navItems.map(({ page, icon, label }) => {
-          const active = current === page;
-          return (
-            <button
-              key={page}
-              onClick={() => onChange(page)}
-              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition ${
-                active
-                  ? "bg-[#2D35D4] text-white"
-                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-[#AEB5FF] dark:hover:bg-[#1A1F8C] dark:hover:text-white"
-              }`}
-            >
-              <span
-                className={`grid h-8 w-8 shrink-0 place-items-center rounded-md ${
+        <nav className="space-y-1">
+          {navItems.map(({ page, icon, label }) => {
+            const active = current === page;
+            return (
+              <button
+                key={page}
+                onClick={() => onChange(page)}
+                className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition ${
                   active
-                    ? "bg-white/15 text-white"
-                    : "bg-slate-100 text-slate-500 dark:bg-[#0D0F3C] dark:text-[#87CEEB]"
+                    ? "bg-[#2D35D4] text-white"
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-[#AEB5FF] dark:hover:bg-[#1A1F8C] dark:hover:text-white"
                 }`}
               >
-                {icon}
-              </span>
-              {label}
-            </button>
-          );
-        })}
-      </nav>
+                <span
+                  className={`grid h-8 w-8 shrink-0 place-items-center rounded-md ${
+                    active
+                      ? "bg-white/15 text-white"
+                      : "bg-slate-100 text-slate-500 dark:bg-[#0D0F3C] dark:text-[#87CEEB]"
+                  }`}
+                >
+                  {icon}
+                </span>
+                {label}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
+      {/* ── Pinned bottom section — never scrolls away ── */}
       {user && (
-        <div className="mt-5 border-t border-slate-200 pt-5 dark:border-[#2D35D4]/30">
+        <div className="shrink-0 border-t border-slate-200 px-3 py-4 dark:border-[#2D35D4]/30">
           <div className="mb-3 flex items-center gap-3">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#2D35D4] text-sm font-bold text-white">
               {user.name[0]?.toUpperCase()}
@@ -197,7 +161,7 @@ export default function Sidebar({ current, onChange }: SidebarProps) {
           </div>
           <button
             onClick={logout}
-            className="mt-3 inline-flex items-center gap-2 rounded-l-sm bg-indigo-600 h-13 w-full px-3.5 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-orange-700 active:scale-95"
+            className="inline-flex w-full cursor-pointer items-center gap-2 rounded bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-orange-700 active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

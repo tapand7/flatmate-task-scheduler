@@ -277,7 +277,7 @@ export default function DashboardPage() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="rounded-lg bg-[#2D35D4] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#1A1F8C]"
+            className="cursor-pointer rounded-lg bg-[#2D35D4] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#1A1F8C]"
           >
             New task
           </button>
@@ -298,43 +298,56 @@ export default function DashboardPage() {
             <button
               onClick={toggleOwnOof}
               disabled={oofLoading}
-              className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-700 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {oofLoading ? "Updating..." : "I'm back in flat"}
+              {oofLoading ? (
+                <>
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  Updating...
+                </>
+              ) : (
+                "I'm back in flat 🏠"
+              )}
             </button>
           </div>
         )}
+
         {user?.status === "ACTIVE" && (
-          <div className="mb-6 flex items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#2D35D4]/10 text-[#2D35D4] dark:bg-[#2D35D4]/30 dark:text-[#87CEEB]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="7" width="20" height="14" rx="2" />
-                  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                </svg>
-              </span>
-              <p className="text-xs text-slate-500 dark:text-[#AEB5FF]">
-                Leaving the flat for a few days?{" "}
-                <button
-                  onClick={toggleOwnOof}
-                  disabled={oofLoading}
-                  className="font-semibold text-[#2D35D4] underline-offset-2 hover:underline dark:text-[#87CEEB]"
-                >
-                  Mark yourself Out of Flat
-                </button>{" "}
-                and tasks will skip you automatically.
-              </p>
-            </div>
+          <div className="mb-6 flex items-center gap-2.5 rounded-xl border border-slate-200 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#2D35D4]/10 text-[#2D35D4] dark:bg-[#2D35D4]/30 dark:text-[#87CEEB]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+              </svg>
+            </span>
+            <p className="text-xs text-slate-500 dark:text-[#AEB5FF]">
+              Leaving the flat for a few days?{" "}
+              <button
+                onClick={toggleOwnOof}
+                disabled={oofLoading}
+                className="inline-flex cursor-pointer items-center gap-1.5 font-semibold text-[#2D35D4] underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-70 dark:text-[#87CEEB]"
+              >
+                {oofLoading ? (
+                  <>
+                    <span className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-[#2D35D4]/20 border-t-[#2D35D4] dark:border-[#87CEEB]/20 dark:border-t-[#87CEEB]" />
+                    Updating...
+                  </>
+                ) : (
+                  "Mark yourself Out of Flat"
+                )}
+              </button>{" "}
+              and tasks will skip you automatically.
+            </p>
           </div>
         )}
 

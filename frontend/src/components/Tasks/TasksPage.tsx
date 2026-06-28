@@ -80,7 +80,7 @@ export default function TasksPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="rounded-lg bg-[#2D35D4] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#1A1F8C]"
+          className="cursor-pointer rounded-lg bg-[#2D35D4] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#1A1F8C]"
         >
           New task
         </button>
