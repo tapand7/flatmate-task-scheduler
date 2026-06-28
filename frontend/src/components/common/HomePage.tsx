@@ -283,10 +283,10 @@ export default function HomePage({ onGetStarted }: HomePageProps) {
           </p>
           <div className="flex flex-col items-center gap-1">
             <div className="grid h-14 w-14 place-items-center rounded-full bg-[#2D35D4] text-xl font-black text-white shadow-md">
-              {user?.name?.[0]?.toUpperCase() ?? "T"}
+              {"T"}
             </div>
             <p className="mt-2 text-base font-black text-slate-950 dark:text-white">
-              {user?.name ?? "Tapan"}
+              {"Tapan"}
             </p>
             <p className="text-xs font-semibold text-[#2D35D4] dark:text-[#87CEEB]">
               Product Owner &amp; CEO
