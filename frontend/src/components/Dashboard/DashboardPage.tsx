@@ -251,6 +251,8 @@ export default function DashboardPage() {
       const updatedUser = await updateUserStatus(user._id, newStatus);
       console.log("updatedUser from API:", updatedUser);
       updateUser(updatedUser);
+    } catch (err) {
+      console.error("OOF toggle failed:", err); // 👈
     } finally {
       setOofLoading(false);
     }
