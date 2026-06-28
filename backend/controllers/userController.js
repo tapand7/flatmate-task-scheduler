@@ -99,11 +99,9 @@ const updateUserStatus = async (req, res) => {
       return res.status(400).json({ message: "Invalid status" });
     }
 
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true },
-    );
+    await User.findByIdAndUpdate(req.params.id, { status });
+    const user = await User.findById(req.params.id).populate("flatId", "name");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
