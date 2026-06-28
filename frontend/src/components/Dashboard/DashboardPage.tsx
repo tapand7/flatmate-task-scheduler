@@ -5,6 +5,7 @@ import { useAuth } from "../Auth/AuthContext";
 import { getFlatId, type Task } from "../../types";
 import CreateTaskModal from "../Tasks/CreateTaskModal";
 import TaskCard from "../Tasks/TaskCard";
+import { updateUserStatus } from "../../api";
 
 const PAGE_SIZE = 6;
 
@@ -207,6 +208,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [page, setPage] = useState(1);
+  const [oofLoading, setOofLoading] = useState(false);
 
   useEffect(() => {
     if (!user?.flatId) {
@@ -243,6 +245,16 @@ export default function DashboardPage() {
       current.map((task) => (task._id === updated._id ? updated : task)),
     );
   };
+  const toggleOwnOof = async () => {
+    if (!user) return;
+    setOofLoading(true);
+    try {
+      const newStatus = user.status === "ACTIVE" ? "OOF" : "ACTIVE";
+      await updateUserStatus(user._id, newStatus);
+    } finally {
+      setOofLoading(false);
+    }
+  };
 
   return (
     <div className="relative min-h-full">
@@ -270,6 +282,61 @@ export default function DashboardPage() {
             New task
           </button>
         </header>
+        {user?.status === "OOF" && (
+          <div className="mb-6 flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 px-5 py-3.5 dark:border-amber-500/30 dark:bg-amber-950/40">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">🧳</span>
+              <div>
+                <p className="text-sm font-bold text-amber-800 dark:text-amber-300">
+                  You are marked Out of Flat
+                </p>
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  Tasks are being skipped over you until you mark yourself back.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={toggleOwnOof}
+              disabled={oofLoading}
+              className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-700 disabled:opacity-50"
+            >
+              {oofLoading ? "Updating..." : "I'm back in flat"}
+            </button>
+          </div>
+        )}
+        {user?.status === "ACTIVE" && (
+          <div className="mb-6 flex items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
+            <div className="flex items-center gap-2.5">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#2D35D4]/10 text-[#2D35D4] dark:bg-[#2D35D4]/30 dark:text-[#87CEEB]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                </svg>
+              </span>
+              <p className="text-xs text-slate-500 dark:text-[#AEB5FF]">
+                Leaving the flat for a few days?{" "}
+                <button
+                  onClick={toggleOwnOof}
+                  disabled={oofLoading}
+                  className="font-semibold text-[#2D35D4] underline-offset-2 hover:underline dark:text-[#87CEEB]"
+                >
+                  Mark yourself Out of Flat
+                </button>{" "}
+                and tasks will skip you automatically.
+              </p>
+            </div>
+          </div>
+        )}
 
         <section className="mb-8 grid gap-4 sm:grid-cols-3">
           {[

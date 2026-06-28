@@ -159,7 +159,6 @@ function MemberRow({
       >
         {member.name[0]?.toUpperCase()}
       </div>
-
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <p className="font-bold text-slate-950 dark:text-white">
@@ -183,17 +182,57 @@ function MemberRow({
           {member.email} - Last assigned: {lastAssigned}
         </p>
       </div>
-
+      // Replace the toggle button in MemberRow
       {canToggle && (
         <button
           onClick={() => onToggle(member)}
           className={`rounded-lg px-3 py-2 text-xs font-bold transition ${
             member.status === "ACTIVE"
-              ? "border border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-[#2D35D4]/50 dark:text-[#DDE2FF] dark:hover:bg-[#1A1F8C]"
+              ? "border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-950/40 dark:text-amber-300"
               : "bg-[#2D35D4] text-white hover:bg-[#1A1F8C]"
           }`}
         >
-          {member.status === "ACTIVE" ? "Mark OOF" : "Set active"}
+          {member.status === "ACTIVE" ? (
+            <span className="flex items-center gap-1.5">
+              {/* Suitcase icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                <line x1="12" y1="12" x2="12" y2="16" />
+                <line x1="10" y1="14" x2="14" y2="14" />
+              </svg>
+              Mark OOF
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5">
+              {/* Home icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Back in flat
+            </span>
+          )}
         </button>
       )}
     </article>

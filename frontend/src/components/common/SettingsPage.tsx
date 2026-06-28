@@ -69,9 +69,6 @@ export default function SettingsPage() {
       </section>
 
       <section className="mb-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]">
-        <h2 className="mb-5 text-xs font-black uppercase tracking-wide text-slate-500 dark:text-[#87CEEB]">
-          Flat
-        </h2>
         <div className="flex flex-wrap items-end gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-[#87CEEB]">
