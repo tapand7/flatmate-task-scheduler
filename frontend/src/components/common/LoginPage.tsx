@@ -84,13 +84,34 @@ export default function LoginPage({
               />
             </label>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex w-full items-center justify-center rounded-lg bg-[#2D35D4] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#1A1F8C] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
+            {loading ? (
+              <div className="flex justify-center py-3">
+                <div
+                  style={{
+                    height: "4px",
+                    width: "130px",
+                    background:
+                      "no-repeat linear-gradient(#2D35D4 0 0), no-repeat linear-gradient(#2D35D4 0 0), #AEB5FF",
+                    backgroundSize: "60% 100%",
+                    animation: "l16 3s infinite",
+                  }}
+                />
+                <style>{`
+      @keyframes l16 {
+        0%   { background-position: -150% 0, -150% 0 }
+        66%  { background-position: 250% 0, -150% 0 }
+        100% { background-position: 250% 0, 250% 0 }
+      }
+    `}</style>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="flex w-full items-center justify-center rounded-lg bg-[#2D35D4] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#1A1F8C]"
+              >
+                Sign in
+              </button>
+            )}
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-500 dark:text-[#AEB5FF]">
