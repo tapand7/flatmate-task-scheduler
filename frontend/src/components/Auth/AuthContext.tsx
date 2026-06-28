@@ -7,12 +7,15 @@ interface AuthContextType {
   token: string | null;
   login: (user: User, token: string) => void;
   logout: () => void;
+  updateUser: (user: User) => void;
   isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem("alterno_user");
     if (!storedUser) return null;
@@ -24,8 +27,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return null;
     }
   });
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("alterno_token"));
-
+  const [token, setToken] = useState<string | null>(() =>
+    localStorage.getItem("alterno_token"),
+  );
+  const updateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem("alterno_user", JSON.stringify(updatedUser));
+  };
   const login = (user: User, token: string) => {
     setUser(user);
     setToken(token);
@@ -41,7 +49,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout, updateUser, isAuthenticated: !!token }}
+    >
       {children}
     </AuthContext.Provider>
   );

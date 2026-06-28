@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { getTasks } from "../../api";
 import { useAuth } from "../Auth/AuthContext";
@@ -9,7 +8,6 @@ import { updateUserStatus } from "../../api";
 
 const PAGE_SIZE = 6;
 
-/* ── Subtle themed wallpaper background ── */
 function DashboardWallpaper() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-[0.05] dark:opacity-[0.05]">
@@ -203,7 +201,7 @@ function DashboardWallpaper() {
 }
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -250,7 +248,9 @@ export default function DashboardPage() {
     setOofLoading(true);
     try {
       const newStatus = user.status === "ACTIVE" ? "OOF" : "ACTIVE";
-      await updateUserStatus(user._id, newStatus);
+      const updatedUser = await updateUserStatus(user._id, newStatus);
+
+      updateUser(updatedUser);
     } finally {
       setOofLoading(false);
     }
@@ -283,14 +283,13 @@ export default function DashboardPage() {
           </button>
         </header>
         {user?.status === "OOF" && (
-          <div className="mb-6 flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 px-5 py-3.5 dark:border-amber-500/30 dark:bg-amber-950/40">
+          <div className="mb-6 flex items-center justify-between rounded-xl border border-[#2D35D4]/30 bg-[#1A1F8C]/10 px-5 py-3.5 dark:border-[#2D35D4]/40 dark:bg-[#1A1F8C]/30">
             <div className="flex items-center gap-3">
-              <span className="text-xl">🧳</span>
               <div>
-                <p className="text-sm font-bold text-amber-800 dark:text-amber-300">
+                <p className="text-sm font-bold text-[#1A1F8C] dark:text-[#87CEEB]">
                   You are marked Out of Flat
                 </p>
-                <p className="text-xs text-amber-600 dark:text-amber-400">
+                <p className="text-xs text-[#2D35D4]/70 dark:text-[#AEB5FF]">
                   Tasks are being skipped over you until you mark yourself back.
                 </p>
               </div>
@@ -298,7 +297,7 @@ export default function DashboardPage() {
             <button
               onClick={toggleOwnOof}
               disabled={oofLoading}
-              className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#2D35D4] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#1A1F8C] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {oofLoading ? (
                 <>
@@ -306,14 +305,14 @@ export default function DashboardPage() {
                   Updating...
                 </>
               ) : (
-                "I'm back in flat 🏠"
+                "Back & ready"
               )}
             </button>
           </div>
         )}
 
         {user?.status === "ACTIVE" && (
-          <div className="mb-6 flex items-center gap-2.5 rounded-xl border border-slate-200 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
+          <div className="mb-6 flex items-center gap-2.5 rounded-xl border border-[#2D35D4]/20 bg-white/80 px-5 py-3 backdrop-blur-sm dark:border-[#2D35D4]/30 dark:bg-[#101450]/80">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#2D35D4]/10 text-[#2D35D4] dark:bg-[#2D35D4]/30 dark:text-[#87CEEB]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -350,7 +349,6 @@ export default function DashboardPage() {
             </p>
           </div>
         )}
-
         <section className="mb-8 grid gap-4 sm:grid-cols-3">
           {[
             {
